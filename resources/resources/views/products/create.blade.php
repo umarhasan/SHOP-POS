@@ -1,0 +1,1 @@
+@extends('layouts.app') @section('page-title','Add Product') @section('content')<div class="card p-4"><form method="POST" action="{{ route('products.store') }}">@csrf @include('products._form')<div class="mt-4"><button class="btn btn-primary">Save Product</button> <a href="{{ route('products.index') }}" class="btn btn-light">Cancel</a></div></form></div>@endsection

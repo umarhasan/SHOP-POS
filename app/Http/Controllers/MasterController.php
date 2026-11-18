@@ -1,0 +1,7 @@
+<?php
+namespace App\Http\Controllers;
+use App\Models\{Unit,BusinessUnit};use Illuminate\Http\Request;use Illuminate\Support\Str;
+class MasterController extends Controller{
+ public function units(){return view('masters.units',['units'=>Unit::orderBy('name')->get()]);}public function saveUnit(Request $r){$d=$r->validate(['name'=>'required|string|max:100','short_name'=>'required|string|max:20|unique:units,short_name','dimension'=>'required|string|max:30','base_factor'=>'required|numeric|gt:0']);Unit::create($d);return back()->with('success','Unit added.');}public function deleteUnit(Unit $unit){if($unit->products()->exists())return back()->withErrors(['unit'=>'Unit is in use.']);$unit->delete();return back()->with('success','Unit deleted.');}
+ public function businesses(){return view('masters.businesses',['businesses'=>BusinessUnit::orderBy('name')->get()]);}public function saveBusiness(Request $r){$d=$r->validate(['name'=>'required|string|max:120','code'=>'required|string|max:30|unique:business_units,code','owner_name'=>'nullable|string|max:120']);BusinessUnit::create($d);return back()->with('success','Business added.');}public function updateBusiness(Request $r,BusinessUnit $business){$d=$r->validate(['name'=>'required|string|max:120','owner_name'=>'nullable|string|max:120','is_active'=>'required|boolean']);$business->update($d);return back()->with('success','Business updated.');}
+}
